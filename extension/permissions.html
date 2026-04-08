@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MeetScribe Permissions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 { margin-top: 0; font-size: 24px; color: #5850ec; }
+        p { line-height: 1.6; margin-bottom: 25px; }
+        button {
+            background-color: #5850ec;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover { background-color: #4338ca; }
+        .success { color: #059669; font-weight: bold; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enable MeetScribe Audio</h1>
+        <p>To record your own voice and capture tab audio reliably, Chrome requires you to grant microphone permission to the extension once.</p>
+        <button id="enable-btn">Grant Microphone Permission</button>
+        <div id="success-msg" class="success">Permission Granted! You can close this tab now.</div>
+    </div>
+    <script src="permissions.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 450px;
+      min-height: 450px;
+      padding: 24px;
+      font-family: -apple-system, system-ui, sans-serif;
+      background: #ffffff;
+      color: #111;
+      margin: 0;
+      overflow: hidden;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: #6366f1;
+      border-radius: 8px;
+    }
+    h2 {
+      font-size: 16px;
+      margin: 0;
+      font-weight: 700;
+    }
+    p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #6366f1;
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #4f46e5;
+    }
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #f1f5f9;
+      color: #334155;
+      text-align: center;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    .status {
+      margin-top: 16px;
+      font-size: 12px;
+      text-align: center;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo"></div>
+    <h2>MeetScribe</h2>
+  </div>
+  <p>Ready to transcribe your meeting? Click below to enable audio capture and open the sidebar.</p>
+  <button id="start-btn" class="btn">Start Transcribing</button>
+  <button id="stop-btn" class="btn-secondary">Stop Recording</button>
+  <div id="status" class="status">v1.0.1 - Connected to Local Backend</div>
+
+  <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+    <h3 style="font-size: 14px; margin-bottom: 4px;">Teams Desktop App</h3>
+    <p style="margin-bottom: 12px; font-size: 12px;">Transcribe the desktop app with an always-on-top window.</p>
+    <button id="launch-app-mode" class="btn-secondary" style="margin-top: 0; padding: 10px;">Launch Floating Overlay</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
