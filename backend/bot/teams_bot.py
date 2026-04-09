@@ -117,7 +117,7 @@ async def run(meeting_url: str, meeting_id: str):
 
             # Handle "Continue on this browser"
             try:
-                await page.wait_for_selector('button:has-text("Continue on this browser")', timeout=15000)
+                await page.wait_for_selector('button:has-text("Continue on this browser")', timeout=60000)
                 await page.evaluate('''() => {
                     const btn = Array.from(document.querySelectorAll('button')).find(el => el.textContent.includes('Continue on this browser'));
                     if (btn) btn.click();
@@ -128,7 +128,7 @@ async def run(meeting_url: str, meeting_id: str):
 
             # Enter Name
             name_input = page.get_by_placeholder("Type your name").first
-            await name_input.wait_for(state="visible", timeout=20000)
+            await name_input.wait_for(state="visible", timeout=60000)
             await name_input.fill("MeetScribe Associate")
 
             # Prove original method for Mute/Join
