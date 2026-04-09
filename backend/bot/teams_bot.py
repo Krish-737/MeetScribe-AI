@@ -109,10 +109,12 @@ async def run(meeting_url: str, meeting_id: str):
             
             await context.add_init_script(audio_injector_script)
             page = await context.new_page()
+            page.set_default_timeout(90000)        # Global action timeout for slow hardware
+            page.set_default_navigation_timeout(90000) # Global loading timeout
             page.on("console", lambda msg: print(f"[Browser]: {msg.text}"))
             await page.route("**/*", lambda route: route.abort() if route.request.url.startswith("msteams") else route.continue_())
 
-            print(f"[*] [Bot v1.1.0] Navigating to {meeting_url}")
+            print(f"[*] [Bot v1.1.1] Navigating to {meeting_url}")
             await page.goto(meeting_url)
 
             # Handle "Continue on this browser"
