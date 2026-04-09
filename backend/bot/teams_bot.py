@@ -21,6 +21,7 @@ async def run(meeting_url: str, meeting_id: str):
             browser = await p.chromium.launch(
                 headless=True, 
                 args=[
+                    "--single-process",
                     "--use-fake-ui-for-media-stream",
                     "--use-fake-device-for-media-stream",
                     "--disable-blink-features=AutomationControlled",
