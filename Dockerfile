@@ -9,12 +9,6 @@ ENV PORT=8000
 # Set the working directory
 WORKDIR /app
 
-# Install system dependencies for audio (required by Deepgram SDK internal imports)
-RUN apt-get update && apt-get install -y \
-    libportaudio2 \
-    libasound2 \
-    && rm -rf /var/lib/apt/lists/*
-
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

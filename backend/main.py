@@ -1,4 +1,9 @@
 import sys
+from unittest.mock import MagicMock
+
+# Headless Fix: Prevent Deepgram from crashing due to missing pyaudio on Linux servers
+sys.modules["pyaudio"] = MagicMock()
+
 import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
