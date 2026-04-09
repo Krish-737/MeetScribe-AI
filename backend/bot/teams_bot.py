@@ -112,29 +112,69 @@ async def run(meeting_url: str, meeting_id: str):
             page.set_default_timeout(90000)        # Global action timeout for slow hardware
             page.set_default_navigation_timeout(90000) # Global loading timeout
             page.on("console", lambda msg: print(f"[Browser]: {msg.text}"))
-            await page.route("**/*", lambda route: route.abort() if route.request.url.startswith("msteams") else route.continue_())
-
-            print(f"[*] [Bot v1.1.1] Navigating to {meeting_url}")
+            
+            # TURBO MODE: Block images and CSS to save CPU on Render
+            async def intercept(route):
+                if route.request.resource_type in ["image", "stylesheet", "font"]:
+                    await route.abort()
+                elif route.request.url.startswith("msteams"):
+                    await route.abort()
+                else:
+                    await route.continue_()
+            
+            await page.route("**/*", intercept)
+ 
+            print(f"[*] [Bot v1.1.3] (Turbo-Mode) Navigating to {meeting_url}")
             await page.goto(meeting_url)
 
-            # Handle "Continue on this browser"
-            try:
-                await page.wait_for_selector('button:has-text("Continue on this browser")', timeout=60000)
-                await page.evaluate('''() => {
-                    const btn = Array.from(document.querySelectorAll('button')).find(el => el.textContent.includes('Continue on this browser'));
-                    if (btn) btn.click();
-                }''')
-            except: pass
+            # Recursive function to find elements in any frame
+            async def click_if_exists(selector, text=None):
+                for frame in page.frames:
+                    try:
+                        if text:
+                            btn = frame.locator(f'{selector}:has-text("{text}")').first
+                        else:
+                            btn = frame.locator(selector).first
+                        
+                        if await btn.is_visible(timeout=2000):
+                            await btn.click()
+                            return True
+                    except: continue
+                return False
 
-            await page.wait_for_load_state("networkidle")
+            # Wait and handle "Continue on this browser" repeatedly
+            for _ in range(3):
+                if await click_if_exists('button', 'Continue on this browser'):
+                    print("[*] Clicked 'Continue on this browser'")
+                    break
+                await page.wait_for_timeout(5000)
 
-            # Enter Name
-            name_input = page.get_by_placeholder("Type your name").first
-            await name_input.wait_for(state="visible", timeout=60000)
+            # Enter Name (search in all frames)
+            print("[*] Waiting for name input...")
+            name_input = None
+            for _ in range(12): # Wait up to 60s
+                for frame in page.frames:
+                    try:
+                        target = frame.get_by_placeholder("Type your name").first
+                        if await target.is_visible(timeout=1000):
+                            name_input = target
+                            break
+                    except: continue
+                if name_input: break
+                await page.wait_for_timeout(5000)
+
+            if not name_input:
+                raise Exception("Could not find name input field in any frame")
+
             await name_input.fill("MeetScribe Associate")
 
-            # Prove original method for Mute/Join
-            print("[*] Reverting to original stable mute/join method...")
+            # Final Join Search
+            for _ in range(6):
+                if await click_if_exists('button', 'Join now'):
+                    print("[*] Clicked 'Join now'")
+                    break
+                await page.wait_for_timeout(5000)
+
             # Check for Termination Signal (from Dashboard)
             if meeting_store.get(meeting_id, {}).get("status") == "terminating":
                 print(f"[*] Termination signal received for {meeting_id}. Leaving meeting...")
