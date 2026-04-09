@@ -1,10 +1,6 @@
 import asyncio
 import json
-from deepgram import (
-    DeepgramClient,
-    LiveOptions,
-    LiveTranscriptionEvents,
-)
+from deepgram import DeepgramClient, LiveOptions, LiveResultResponse, LiveTranscriptionEvents
 from ..config import settings
 
 async def stream_to_deepgram(audio_queue: asyncio.Queue, chunk_callback, status_callback=None, api_key: str | None = None):
