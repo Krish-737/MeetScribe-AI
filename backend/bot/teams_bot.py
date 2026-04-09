@@ -120,9 +120,9 @@ async def run(meeting_url: str, meeting_id: str):
             page.set_default_navigation_timeout(90000) # Global loading timeout
             page.on("console", lambda msg: print(f"[Browser]: {msg.text}"))
             
-            # TURBO MODE: Block images and CSS to save CPU on Render
+            # Railway Mode: Only block images to save bandwidth, keep CSS/Fonts for stability
             async def intercept(route):
-                if route.request.resource_type in ["image", "stylesheet", "font"]:
+                if route.request.resource_type == "image":
                     await route.abort()
                 elif route.request.url.startswith("msteams"):
                     await route.abort()
@@ -131,7 +131,7 @@ async def run(meeting_url: str, meeting_id: str):
             
             await page.route("**/*", intercept)
  
-            print(f"[*] [Bot v1.1.3] (Turbo-Mode) Navigating to {meeting_url}")
+            print(f"[*] [Bot v1.2.0] (Railway-Mode) Navigating to {meeting_url}")
             await page.goto(meeting_url)
 
             # Recursive function to find elements in any frame
