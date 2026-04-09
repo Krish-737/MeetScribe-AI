@@ -112,7 +112,7 @@ async def run(meeting_url: str, meeting_id: str):
             page.on("console", lambda msg: print(f"[Browser]: {msg.text}"))
             await page.route("**/*", lambda route: route.abort() if route.request.url.startswith("msteams") else route.continue_())
 
-            print(f"[*] Navigating to {meeting_url}")
+            print(f"[*] [Bot v1.1.0] Navigating to {meeting_url}")
             await page.goto(meeting_url)
 
             # Handle "Continue on this browser"
