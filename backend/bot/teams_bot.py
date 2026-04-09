@@ -27,13 +27,19 @@ async def run(meeting_url: str, meeting_id: str):
                     "--autoplay-policy=no-user-gesture-required",
                     "--disable-background-timer-throttling",
                     "--disable-backgrounding-occluded-windows",
-                    "--disable-renderer-backgrounding"
+                    "--disable-renderer-backgrounding",
+                    "--disable-dev-shm-usage",
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox",
+                    "--disable-gpu",
+                    "--disable-software-rasterizer",
+                    "--js-flags='--max-old-space-size=256'"
                 ]
             )
             
             context = await browser.new_context(
                 viewport={"width": 1280, "height": 720},
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
                 bypass_csp=True
             )
 
